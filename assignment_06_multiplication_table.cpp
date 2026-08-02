@@ -55,5 +55,64 @@
 // =============================================================================
 
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
+// Function prototypes
+void printSingleTable(int num);
+void printTablesUpToN(int n);
+
+int main() {
+    int choice;
+
+    cout << "Multiplication Table Generator" << endl;
+    cout << "1. Single Table" << endl;
+    cout << "2. Tables from 1 to N (Bonus)" << endl;
+    cout << "Enter choice: ";
+    cin >> choice;
+
+    if (choice == 1) {
+        int num;
+        cout << "Enter a number: ";
+        cin >> num;
+
+        printSingleTable(num);
+
+    } else if (choice == 2) {
+        int n;
+        cout << "Enter N: ";
+        cin >> n;
+
+        if (n <= 0) {
+            cout << "Error: N must be a positive integer." << endl;
+            return 1;
+        }
+
+        printTablesUpToN(n);
+
+    } else {
+        cout << "Error: Invalid choice." << endl;
+        return 1;
+    }
+
+    return 0;
+}
+
+// Prints the multiplication table for a single number, 1 to 12
+void printSingleTable(int num) {
+    cout << "Multiplication Table for " << num << ":" << endl;
+    for (int i = 1; i <= 12; i++) {
+        cout << num << "  x  " << setw(2) << i << "  =  " << (num * i) << endl;
+    }
+}
+
+// Prints multiplication tables for every number from 1 to n,
+// separated by a line of dashes
+void printTablesUpToN(int n) {
+    for (int num = 1; num <= n; num++) {
+        printSingleTable(num);
+        if (num != n) {
+            cout << "---------------------------" << endl;
+        }
+    }
+}
