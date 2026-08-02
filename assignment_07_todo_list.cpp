@@ -78,5 +78,106 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <limits>
 using namespace std;
 
+// Function prototypes
+void displayMenu();
+void addTask(vector<string>& tasks);
+void viewTasks(const vector<string>& tasks);
+void deleteTask(vector<string>& tasks);
+
+int main() {
+    vector<string> tasks;
+    int choice;
+
+    do {
+        displayMenu();
+        cin >> choice;
+
+        // Discard leftover newline so getline() works correctly afterward
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        switch (choice) {
+            case 1:
+                addTask(tasks);
+                break;
+            case 2:
+                viewTasks(tasks);
+                break;
+            case 3:
+                deleteTask(tasks);
+                break;
+            case 4:
+                cout << "Goodbye!" << endl;
+                break;
+            default:
+                cout << "Error: Invalid choice. Please enter 1-4." << endl;
+        }
+
+        cout << endl;
+
+    } while (choice != 4);
+
+    return 0;
+}
+
+// Displays the main menu
+void displayMenu() {
+    cout << "============================" << endl;
+    cout << "     TO-DO LIST MENU" << endl;
+    cout << "============================" << endl;
+    cout << "1. Add task" << endl;
+    cout << "2. View tasks" << endl;
+    cout << "3. Delete task" << endl;
+    cout << "4. Quit" << endl;
+    cout << "Enter your choice (1-4): ";
+}
+
+// Prompts the user for a task description and adds it to the list
+void addTask(vector<string>& tasks) {
+    string task;
+    cout << "Enter task: ";
+    getline(cin, task);
+
+    tasks.push_back(task);
+    cout << "Task added: \"" << task << "\"" << endl;
+}
+
+// Displays all tasks, numbered from 1. Shows a message if the list is empty.
+void viewTasks(const vector<string>& tasks) {
+    if (tasks.empty()) {
+        cout << "Your to-do list is empty. Add a task to get started!" << endl;
+        return;
+    }
+
+    cout << "Your Tasks:" << endl;
+    for (size_t i = 0; i < tasks.size(); i++) {
+        cout << (i + 1) << ". " << tasks[i] << endl;
+    }
+}
+
+// Shows tasks, asks which one to delete, then removes it from the list
+void deleteTask(vector<string>& tasks) {
+    if (tasks.empty()) {
+        cout << "Your to-do list is empty. Nothing to delete." << endl;
+        return;
+    }
+
+    viewTasks(tasks);
+
+    int taskNum;
+    cout << "Enter task number to delete: ";
+    cin >> taskNum;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    if (taskNum < 1 || taskNum > static_cast<int>(tasks.size())) {
+        cout << "Error: Invalid task number." << endl;
+        return;
+    }
+
+    string removed = tasks[taskNum - 1];
+    tasks.erase(tasks.begin() + (taskNum - 1));
+
+    cout << "Task \"" << removed << "\" has been removed." << endl;
+}
